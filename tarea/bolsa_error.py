@@ -1,94 +1,87 @@
-# Código base — Semana 02
-# Fuente: 01-Momento-1-Contrato-y-secuencia/02-Semana-02-ADT-y-Spec-Driven-Development/02-guia-de-laboratorio.html
+# carrito_spec.py (documentación del TAD)
+"""
+TAD: Carrito de Compras
 
-class ElementoNoEncontradoError(Exception):
-    """El elemento solicitado no está en la bolsa."""
+OPERACIONES:
+1. crear_carrito() -> Carrito
+   - Crea un carrito vacío
 
+2. agregar(carrito, producto, cantidad) -> bool
+   - Agrega X unidades de un producto
+   - Retorna True si exitoso, False si falla
+   - Precondiciones: producto debe existir en catálogo, cantidad > 0
 
-class BolsaLista:
-    """Bolsa implementada sobre una lista: un elemento por cada aparición.
+3. sacar(carrito, producto, cantidad) -> bool
+   - Qita X unidades de un producto
+   - Retorna True si pudo, False si no hay suficiente
 
-    Complejidad:
-        agregar  -> O(1)
-        sacar    -> O(n)
-        cuantos  -> O(n)
-        tamaño   -> O(1)
-        contiene -> O(n)
-    """
+4. cuantos(carrito, producto) -> int
+   - Devuelve cuántas unidades hay de un producto
 
-    def __init__(self):
-        self._elementos = []
+5. total(carrito) -> float
+   - Devuelve el monto total a pagar
 
-    def agregar(self, elemento):
-        """Agrega UNA aparición del elemento a la bolsa. O(1)"""
-        self._elementos.append(elemento)
-
-    def sacar(self, elemento):
-        """Saca UNA aparición del elemento.
-        Si no existe, lanza ElementoNoEncontradoError. O(n)
-        """
-        for i in range(len(self._elementos)):
-            if self._elementos[i] == elemento:
-                self._elementos.pop(i)
-                return
-        raise ElementoNoEncontradoError(f"'{elemento}' no está en la bolsa")
-
-    def cuantos(self, elemento):
-        """Devuelve cuántas veces aparece el elemento. O(n)"""
-        contador = 0
-        for e in self._elementos:
-            if e == elemento:
-                contador += 1
-        return contador
-
-    def tamaño(self):
-        """Devuelve la cantidad total de elementos. O(1)"""
-        return len(self._elementos)
-
-    def contiene(self, elemento):
-        """Devuelve True si el elemento está en la bolsa. O(n)"""
-        return elemento in self._elementos
-
-    def __len__(self):
-        return self.tamaño()
-
-    def __repr__(self):
-        return f"BolsaLista({self._elementos!r})"
+6. ver_cantidades(carrito) -> list[(producto, cantidad)]
+   - Devuelve lista de todos los productos y cantidades
+"""
+# test_carrito.py
+import pytest
 
 
-# ================================================
-# 🧪 PRUEBAS
-# ================================================
-if __name__ == "__main__":
-    bolsa = BolsaLista()
+def test_creacion_carrito_vacio():
+    """Un carrito nuevo está vacío"""
+    carrito = crear_carrito()
+    assert total(carrito) == 0.0
+    assert len(carrito) == 0
 
-    # --- Agregar ---
-    bolsa.agregar("lapiz")
-    bolsa.agregar("lapiz")
-    bolsa.agregar("cuaderno")
-    print(bolsa)                    # BolsaLista(['lapiz', 'lapiz', 'cuaderno'])
+def test_agregar_producto_valido():
+    """Puedo agregar un producto existente"""
+    carrito = crear_carrito()
+    resultado = agregar(carrito, "lapiz", 3)
+    assert resultado == True
+    assert cuantos(carrito, "lapiz") == 3
 
-    # --- Cuántos ---
-    print(bolsa.cuantos("lapiz"))    # 2
-    print(bolsa.cuantos("cuaderno"))# 1
-    print(bolsa.cuantos("mochila"))# 0
+def test_agregar_producto_inexistente():
+    """No puedo agregar producto que no existe"""
+    carrito = crear_carrito()
+    resultado = agregar(carrito, "remera", 1)
+    assert resultado == False
+    assert cuantos(carrito, "remera") == 0
 
-    # --- Tamaño ---
-    print(bolsa.tamaño())            # 3
-    print(len(bolsa))                # 3
+def test_agregar_cantidad_negativa():
+    """No puedo agregar cantidad negativa"""
+    carrito = crear_carrito()
+    resultado = agregar(carrito, "lapiz", -5)
+    assert resultado == False
 
-    # --- Contiene ---
-    print(bolsa.contiene("lapiz"))   # True
-    print(bolsa.contiene("mochila"))# False
+def test_sacar_producto_disponible():
+    """Puedo sacar si tengo suficientes"""
+    carrito = crear_carrito()
+    agregar(carrito, "lapiz", 5)
+    resultado = sacar(carrito, "lapiz", 2)
+    assert resultado == True
+    assert cuantos(carrito, "lapiz") == 3
 
-    # --- Sacar ---
-    bolsa.sacar("lapiz")             # Saca UN solo lápiz
-    print(bolsa)                     # BolsaLista(['lapiz', 'cuaderno'])
-    print(bolsa.cuantos("lapiz"))   # 1
+def test_sacar_sin_stock():
+    """No puedo sacar más de lo que tengo"""
+    carrito = crear_carrito()
+    agregar(carrito, "lapiz", 2)
+    resultado = sacar(carrito, "lapiz", 5)
+    assert resultado == False
+    assert cuantos(carrito, "lapiz") == 2  # No debe cambiar
 
-    # --- Sacar algo que no existe ---
-    try:
-        bolsa.sacar("mochila")
-    except ElementoNoEncontradoError as e:
-        print(e)                     # 'mochila' no está en la bolsa
-    
+def test_total_calculo_correcto():
+    """El total suma precio × cantidad"""
+    carrito = crear_carrito()
+    agregar(carrito, "lapiz", 2)     # 2 × 2.50 = 5.00
+    agregar(carrito, "cuaderno", 3)  # 3 × 8.00 = 24.00
+    assert total(carrito) == 29.00
+
+def test_cuanto_hay_de_cada_uno():
+    """Puedo ver todas las cantidades"""
+    carrito = crear_carrito()
+    agregar(carrito, "lapiz", 5)
+    agregar(carrito, "cuaderno", 3)
+    cantidades = ver_cantidades(carrito)
+    assert ("lapiz", 5) in cantidades
+    assert ("cuaderno", 3) in cantidades

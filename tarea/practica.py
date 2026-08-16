@@ -117,4 +117,4 @@ if __name__ == "__main__":
             break
 
         else:
-            print(" Opción no válida)
+            print(" Opción no válida")
