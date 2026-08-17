@@ -1,4 +1,3 @@
-"""Implementación simple del TAD Carrito UCC"""
 
 CATALOGO = {
     "lapiz": 2.50,

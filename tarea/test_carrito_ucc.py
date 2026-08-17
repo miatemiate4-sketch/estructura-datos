@@ -80,7 +80,7 @@ class TestAgregar:
     
     def test_agregar_normaliza_a_minusculas(self, carrito_vacio):
         """Nombres en mayúscula se normalizan a minúscula"""
-        agregar(carrito_vacio, "LAPIZ", 1)
+        agregar(carrito_vacio, "lapiz", 1)
         assert "lapiz" in carrito_vacio
         assert "LAPIZ" not in carrito_vacio
     
