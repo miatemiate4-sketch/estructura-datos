@@ -11,5 +11,7 @@ Se calcula y se puede usar, Para poder imprimir, enviar, o sumar después
 4. 	¿Qué pasa si saco algo que no tengo?
 Aviso error y no modifico el carrito, Para que no se rompa el programa ni guarde datos inválidos
 
+TDA de carrito ucc
+
 
 
