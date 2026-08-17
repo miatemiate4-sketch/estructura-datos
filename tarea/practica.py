@@ -1,8 +1,4 @@
-# ================================================
-# 🛒 CARRITO DE UCC
-# ================================================
 
-# Catálogo de productos (PRECIO POR UNIDAD)
 precios = {
     "lapiz": 2.50,
     "cuaderno": 8.00,
@@ -11,7 +7,7 @@ precios = {
     "mochila": 65.00
 }
 
-# Carrito vacío (PRODUCTO -> CANTIDAD)
+
 carrito = {}
 
 
@@ -74,9 +70,6 @@ def mostrar_catalogo():
         print(f"  • {producto}: ${precio:.2f}")
 
 
-# ================================================
-#  PROGRAMA PRINCIPAL
-# ================================================
 if __name__ == "__main__":
     print(" TIENDA UCC")
     print("=" * 35)
