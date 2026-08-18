@@ -3,8 +3,8 @@
 
 # semana2/test_bolsa.py
 import pytest
-from bolsa_lista import BolsaLista
-from bolsa_dict import BolsaDict
+from semana2.bolsa_lista import BolsaLista
+from semana2.bolsa_dict import BolsaDict
 
 
 # Las MISMAS pruebas corren contra las DOS implementaciones
