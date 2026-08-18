@@ -1,11 +1,9 @@
 # Código base — Semana 02
 # Fuente: 01-Momento-1-Contrato-y-secuencia/02-Semana-02-ADT-y-Spec-Driven-Development/02-guia-de-laboratorio.html
 
-# semana2/test_bolsa.py
 import pytest
 from bolsa_lista import BolsaLista
 from bolsa_dict import BolsaDict
-
 
 # Las MISMAS pruebas corren contra las DOS implementaciones
 @pytest.fixture(params=[BolsaLista, BolsaDict])
@@ -29,7 +27,11 @@ def test_duplicados(Bolsa):
     assert b.tamaño() == 2
 
 
-
+def test_sacar_inexistente(Bolsa):
+    """CA-03: sacar un elemento inexistente lanza excepción."""
+    b = Bolsa()
+    with pytest.raises(ElementoNoEncontradoError):
+        b.sacar("fantasma")
 
 
 def test_sacar_reduce_cantidad(Bolsa):

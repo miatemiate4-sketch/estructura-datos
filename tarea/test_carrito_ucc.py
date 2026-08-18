@@ -1,4 +1,4 @@
-# test_carrito_ucc.py
+
 import pytest
 
 def get_functions(impl_name):
@@ -95,7 +95,7 @@ class TestAgregar:
     def test_agregar_normaliza_a_minusculas(self, carrito_vacio, carrito_funcs):
         """Nombres en mayúscula se normalizan a minúscula"""
         _, agregar, _, _, _ = carrito_funcs
-        agregar(carrito_vacio, "lapizgit ", 1)
+        agregar(carrito_vacio, "lapiz ", 1)
         assert "lapiz" in carrito_vacio
         assert "LAPIZ" not in carrito_vacio
     
