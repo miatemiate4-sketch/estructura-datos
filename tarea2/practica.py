@@ -1,3 +1,4 @@
+#diccionario
 precios = {
     "lapiz": 2.50,
     "cuaderno": 8.00,
@@ -8,7 +9,6 @@ precios = {
 
 
 carrito = {}
-
 
 def agregar(producto, cantidad):
     """Agrega X unidades de un producto"""

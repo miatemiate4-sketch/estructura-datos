@@ -7,16 +7,14 @@ class ElementoNoEncontradoError(Exception):
     pass
 
 class BolsaDict:
-    """
-    TAD Bolsa implementado con diccionario interno.
-    """
-    
+   
+    #un diccionario vacío
     def __init__(self):
         self._bolsa = {}
     
     def agregar(self, elemento):
         """Agrega un elemento a la bolsa."""
-        self._bolsa[elemento] = self._bolsa.get(elemento, 0) + 1
+        self._bolsa[elemento] = self._bolsa.get(elemento, 0) + 1 # ← O(1) Tarda exactamente igual osea es constante
     
     def cuantos(self, elemento):
         """Devuelve la cantidad de veces que aparece un elemento."""
@@ -27,10 +25,7 @@ class BolsaDict:
         return elemento in self._bolsa
     
     def sacar(self, elemento):
-        """
-        Remueve una instancia del elemento.
-        Lanza ElementoNoEncontradoError si no existe.
-        """
+       
         if elemento not in self._bolsa or self._bolsa[elemento] == 0:
             raise ElementoNoEncontradoError(f"El elemento '{elemento}' no está en la bolsa")
         
@@ -40,4 +35,4 @@ class BolsaDict:
     
     def tamaño(self):
         """Devuelve el total de elementos en la bolsa."""
-        return sum(self._bolsa.values())
+        return sum(self._bolsa.values())# ← O(n) Tarda el doble o sea lineal
